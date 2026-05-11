@@ -1,7 +1,10 @@
 import { ArrowRight, Shield, Zap, Globe } from "lucide-react";
 import { Button } from "./ui/button";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden" style={{ background: 'var(--gradient-hero)' }}>
       {/* Background Decorations */}
@@ -16,7 +19,7 @@ const HeroSection = () => {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium mb-8 animate-fade-in">
             <Zap className="w-4 h-4" />
-            <span>Student Banking Project 2024</span>
+            <span>Student Banking Project 2025</span>
           </div>
 
           {/* Main Heading */}
@@ -33,8 +36,8 @@ const HeroSection = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-slide-up stagger-2">
-            <Button variant="hero" size="xl">
-              View Dashboard
+            <Button variant="hero" size="xl" onClick={() => navigate("/login")}>
+              Get Started
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
             <Button variant="outline" size="xl">

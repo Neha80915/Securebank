@@ -1,6 +1,6 @@
 import { Send, Download, RefreshCw, Receipt, QrCode, CreditCard } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-
+import { useNavigate } from "react-router-dom";
 const actions = [
   { icon: Send, label: "Send Money", color: "text-primary" },
   { icon: Download, label: "Withdraw", color: "text-accent" },
@@ -11,7 +11,24 @@ const actions = [
 ];
 
 const QuickActions = () => {
+  const navigate = useNavigate();
   const handleAction = (label: string) => {
+    if (label === "Send Money" || label === "Transfer") {
+      navigate("/transfer");
+      return;
+    }
+    if (label === "Withdraw") {
+      navigate("/atm");
+      return;
+    }
+    if (label === "Add Card") {
+      navigate("/cards");
+      return;
+    }
+    if (label === "Pay Bills") {
+      alert("Pay Bill functionality coming soon!");
+      return;
+    }
     toast({
       title: `${label} Selected`,
       description: `This feature would open the ${label.toLowerCase()} interface.`,
@@ -24,8 +41,7 @@ const QuickActions = () => {
         <button
           key={action.label}
           onClick={() => handleAction(action.label)}
-          className="action-btn opacity-0 animate-slide-up"
-          style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'forwards' }}
+          className="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200"
         >
           <div className={`w-12 h-12 rounded-xl bg-muted flex items-center justify-center ${action.color}`}>
             <action.icon className="w-6 h-6" />
