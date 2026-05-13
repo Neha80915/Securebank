@@ -1,4 +1,5 @@
 import { CreditCard, Github, Linkedin, Mail } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -14,7 +15,9 @@ const Footer = () => {
               <span className="text-xl font-bold text-foreground">SecureBank</span>
             </div>
             <p className="text-muted-foreground max-w-md mb-4">
-              A student project demonstrating modern banking management system with ATM, credit & debit card features, balance checking, and transaction history.
+              A student project demonstrating modern banking management system
+              with ATM, credit & debit card features, balance checking, and
+              transaction history.
             </p>
             <p className="text-sm text-muted-foreground">
               Built with React, TypeScript & Tailwind CSS
@@ -25,24 +28,53 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-foreground mb-4">Features</h4>
             <ul className="space-y-2 text-muted-foreground">
-              <li><a href="#dashboard" className="hover:text-foreground transition-colors">Dashboard</a></li>
-              <li><a href="#cards" className="hover:text-foreground transition-colors">Card Management</a></li>
-              <li><a href="#transactions" className="hover:text-foreground transition-colors">Transactions</a></li>
-              <li><a href="#atm" className="hover:text-foreground transition-colors">ATM Locator</a></li>
+              <li>
+                <Link to="/dashboard" className="hover:text-foreground transition-colors">
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <Link to="/cards" className="hover:text-foreground transition-colors">
+                  Card Management
+                </Link>
+              </li>
+              <li>
+                <Link to="/transactions" className="hover:text-foreground transition-colors">
+                  Transactions
+                </Link>
+              </li>
+              <li>
+                <Link to="/atm" className="hover:text-foreground transition-colors">
+                  ATM Locator
+                </Link>
+              </li>
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Connect */}
           <div>
             <h4 className="font-semibold text-foreground mb-4">Connect</h4>
             <div className="flex gap-3">
-              <a href="#" className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-primary/10 transition-colors">
+              <a
+                href="https://github.com/Neha80915"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-primary/10 transition-colors"
+              >
                 <Github className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-primary/10 transition-colors">
+              <a
+                href="https://www.linkedin.com/in/neha-devi-99947a31b/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-primary/10 transition-colors"
+              >
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-primary/10 transition-colors">
+              <a
+                href="mailto:nehadevi1750@email.com"
+                className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-primary/10 transition-colors"
+              >
                 <Mail className="w-5 h-5" />
               </a>
             </div>
@@ -50,7 +82,10 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-border pt-8 text-center text-sm text-muted-foreground">
-          <p>© 2024 SecureBank - Student Banking Project. For Educational Purposes Only.</p>
+          <p>
+            © {new Date().getFullYear()} SecureBank — Student Banking Project.
+            For Educational Purposes Only.
+          </p>
         </div>
       </div>
     </footer>

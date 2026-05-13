@@ -1,17 +1,19 @@
 import { Send, Download, RefreshCw, Receipt, QrCode, CreditCard } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+
 const actions = [
   { icon: Send, label: "Send Money", color: "text-primary" },
   { icon: Download, label: "Withdraw", color: "text-accent" },
-  { icon: RefreshCw, label: "Transfer", color: "text-success" },
-  { icon: Receipt, label: "Pay Bills", color: "text-warning" },
+  { icon: RefreshCw, label: "Transfer", color: "text-green-600" },
+  { icon: Receipt, label: "Pay Bills", color: "text-yellow-500" },
   { icon: QrCode, label: "Scan QR", color: "text-primary" },
   { icon: CreditCard, label: "Add Card", color: "text-accent" },
 ];
 
 const QuickActions = () => {
   const navigate = useNavigate();
+
   const handleAction = (label: string) => {
     if (label === "Send Money" || label === "Transfer") {
       navigate("/transfer");
@@ -26,7 +28,17 @@ const QuickActions = () => {
       return;
     }
     if (label === "Pay Bills") {
-      alert("Pay Bill functionality coming soon!");
+      toast({
+        title: "Coming Soon!",
+        description: "Pay Bills feature will be available soon.",
+      });
+      return;
+    }
+    if (label === "Scan QR") {
+      toast({
+        title: "QR Scanner Coming Soon",
+        description: "Scan & Pay feature is under development.",
+      });
       return;
     }
     toast({
@@ -37,16 +49,20 @@ const QuickActions = () => {
 
   return (
     <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
-      {actions.map((action, index) => (
+      {actions.map((action) => (
         <button
           key={action.label}
           onClick={() => handleAction(action.label)}
-          className="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200"
+          className="flex flex-col items-center justify-center p-4 bg-card rounded-lg shadow-sm hover:shadow-md transition-all border border-border hover:border-primary/30 hover:scale-105 active:scale-95"
         >
-          <div className={`w-12 h-12 rounded-xl bg-muted flex items-center justify-center ${action.color}`}>
+          <div
+            className={`w-12 h-12 rounded-xl bg-muted flex items-center justify-center mb-2 ${action.color}`}
+          >
             <action.icon className="w-6 h-6" />
           </div>
-          <span className="text-sm font-medium text-foreground">{action.label}</span>
+          <span className="text-xs font-medium text-foreground text-center leading-tight">
+            {action.label}
+          </span>
         </button>
       ))}
     </div>

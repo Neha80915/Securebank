@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Wifi, Eye, EyeOff } from "lucide-react";
 
 interface BankCardProps {
@@ -11,17 +11,35 @@ interface BankCardProps {
   delay?: number;
 }
 
-const BankCard = ({ type, cardNumber, holderName, expiryDate, balance, variant = "blue", delay = 0 }: BankCardProps) => {
+const BankCard = ({
+  type,
+  cardNumber,
+  holderName,
+  expiryDate,
+  balance = 0,
+  variant = "blue",
+  delay = 0,
+}: BankCardProps) => {
   const [showNumber, setShowNumber] = useState(false);
 
-  const maskedNumber = showNumber 
-    ? cardNumber 
+  // Auto-hide card number after 5 seconds
+  useEffect(() => {
+    if (showNumber) {
+      const timer = setTimeout(() => setShowNumber(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [showNumber]);
+
+  const maskedNumber = showNumber
+    ? cardNumber
     : `•••• •••• •••• ${cardNumber.slice(-4)}`;
 
   return (
-    <div 
-      className={`bank-card ${variant === "teal" ? "bank-card-teal" : ""} opacity-0 animate-slide-up`}
-      style={{ animationDelay: `${delay}ms`, animationFillMode: 'forwards' }}
+    <div
+      className={`bank-card ${
+        variant === "teal" ? "bank-card-teal" : ""
+      } opacity-0 animate-slide-up`}
+      style={{ animationDelay: `${delay}ms`, animationFillMode: "forwards" }}
     >
       {/* Card Pattern */}
       <div className="absolute inset-0 opacity-10">
@@ -43,30 +61,46 @@ const BankCard = ({ type, cardNumber, holderName, expiryDate, balance, variant =
 
         {/* Card Number */}
         <div className="mb-6">
-          <div className="flex items-center gap-2 mb-2">
+          <div className="flex items-center gap-2 mb-1">
             <p className="text-xl tracking-widest font-mono">{maskedNumber}</p>
-            <button 
+            <button
               onClick={() => setShowNumber(!showNumber)}
               className="p-1 hover:bg-primary-foreground/10 rounded transition-colors"
+              title={showNumber ? "Hide card number" : "Show card number"}
             >
-              {showNumber ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              {showNumber ? (
+                <EyeOff className="w-4 h-4" />
+              ) : (
+                <Eye className="w-4 h-4" />
+              )}
             </button>
           </div>
+          {showNumber && (
+            <p className="text-xs opacity-60">Auto-hides in 5 seconds</p>
+          )}
         </div>
 
         {/* Footer */}
         <div className="flex items-end justify-between">
           <div>
-            <p className="text-xs uppercase tracking-wider opacity-60 mb-1">Card Holder</p>
+            <p className="text-xs uppercase tracking-wider opacity-60 mb-1">
+              Card Holder
+            </p>
             <p className="font-semibold">{holderName}</p>
           </div>
           <div className="text-right">
-            <p className="text-xs uppercase tracking-wider opacity-60 mb-1">Expires</p>
+            <p className="text-xs uppercase tracking-wider opacity-60 mb-1">
+              Expires
+            </p>
             <p className="font-semibold">{expiryDate}</p>
           </div>
           <div className="text-right">
-            <p className="text-xs uppercase tracking-wider opacity-60 mb-1">Balance</p>
-            <p className="font-bold text-lg">${balance.toLocaleString()}</p>
+            <p className="text-xs uppercase tracking-wider opacity-60 mb-1">
+              Balance
+            </p>
+            <p className="font-bold text-lg">
+              ₹{balance.toLocaleString("en-IN")}
+            </p>
           </div>
         </div>
 

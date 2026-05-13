@@ -1,20 +1,33 @@
-// src/components/ProtectedRoute.tsx
 import { Navigate } from "react-router-dom";
+import { ReactNode } from "react";
 
 type Props = {
-  children: JSX.Element;
+  children: ReactNode;
+};
+
+const isTokenValid = (token: string): boolean => {
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    const isExpired = payload.exp * 1000 < Date.now();
+    return !isExpired;
+  } catch {
+    return false;
+  }
 };
 
 const ProtectedRoute = ({ children }: Props) => {
   const token = localStorage.getItem("token");
 
   if (!token) {
-    // no token: send user to login
     return <Navigate to="/login" replace />;
   }
 
-  // token present: show the protected page
-  return children;
+  if (!isTokenValid(token)) {
+    localStorage.removeItem("token");
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;
