@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Account = require('../models/Account');
+const db = require('../database/init');
 
 // Token blacklist (in-memory - use Redis in production)
 const tokenBlacklist = new Set();
@@ -9,7 +10,6 @@ const tokenBlacklist = new Set();
 const register = async (req, res) => {
   const { name, cardNumber, pin } = req.body;
 
-  // Input validation
   if (!name || !cardNumber || !pin) {
     return res.status(400).json({ message: 'All fields are required' });
   }
@@ -29,11 +29,14 @@ const register = async (req, res) => {
       return res.status(400).json({ message: 'Card number already registered' });
     }
 
-    // PIN is hashed inside User.create()
-    const user = await User.create(name, cardNumber, pin);
+    const user = await User.create(name, cardNumber, pin, 50000);
 
-    // Create default checking account with sample balance
-    await Account.create(user.id, 'checking', 10000.00);
+    await Account.create(user.id, 'checking', 50000.00);
+
+    db.run(
+      'INSERT INTO cards (user_id, card_type, card_number, expiry) VALUES (?, ?, ?, ?)',
+      [user.id, 'debit', cardNumber, '12/26']
+    );
 
     res.status(201).json({ message: 'Registration successful. Please login.' });
   } catch (error) {
@@ -45,7 +48,6 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { cardNumber, pin } = req.body;
 
-  // Input validation
   if (!cardNumber || !pin) {
     return res.status(400).json({ message: 'Card number and PIN are required' });
   }
